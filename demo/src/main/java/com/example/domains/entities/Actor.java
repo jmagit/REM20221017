@@ -5,9 +5,13 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.UniqueElements;
+
+import com.example.domains.core.entities.EntityBase;
+import com.example.domains.core.validations.NIF;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -21,7 +25,7 @@ import java.util.Objects;
 @Entity
 @Table(name="actor")
 @NamedQuery(name="Actor.findAll", query="SELECT a FROM Actor a")
-public class Actor implements Serializable {
+public class Actor extends EntityBase<Actor> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -37,6 +41,8 @@ public class Actor implements Serializable {
 	@Column(name="last_name", nullable=false, length=45)
 	@NotBlank
 	@Size(min=2, max = 45)
+//	@Pattern(regexp = "[A-Z]+")
+	@NIF
 	private String lastName;
 
 	@Column(name="last_update", insertable=false, updatable=false, nullable=false)

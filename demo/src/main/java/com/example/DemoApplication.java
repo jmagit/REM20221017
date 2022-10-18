@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 
 import com.example.domains.contracts.repositories.ActorRepository;
 import com.example.domains.entities.Actor;
+import com.example.domains.entities.dtos.ActorDTO;
+import com.example.domains.entities.dtos.ActorShort;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
@@ -45,15 +47,25 @@ public class DemoApplication implements CommandLineRunner {
 //		dao.findConSQL(200).forEach(System.out::println);
 //		dao.findAll((root, query, builder) -> builder.greaterThan(root.get("actorId"), 200)).forEach(System.out::println);
 //		dao.findAll((root, query, builder) -> builder.lessThan(root.get("actorId"), 10)).forEach(System.out::println);
-		var item = dao.findById(1);
-		if(item.isEmpty())
-			System.out.println("No lo encuentro");
-		else {
-			var actor = item.get();
-			System.out.println(actor);
-			actor.getFilmActors().forEach(f -> System.out.println(f.getFilm().getTitle()));
-		}
-		
+//		var item = dao.findById(1);
+//		if(item.isEmpty())
+//			System.out.println("No lo encuentro");
+//		else {
+//			var actor = item.get();
+//			System.out.println(actor);
+//			actor.getFilmActors().forEach(f -> System.out.println(f.getFilm().getTitle()));
+//		}
+//		var actor = new Actor(208, null, "12345678z");
+//		if(actor.isInvalid())
+//			System.out.println(actor.getErrorsMessage());
+//		else
+//			dao.save(actor);
+//		dao.findAll().forEach(f -> System.out.println(ActorDTO.from(f)));
+//		var dto = new ActorDTO(0, null, "12345678z");
+//		dao.save(ActorDTO.from(dto));
+//		dao.findByActorIdGreaterThan(200).forEach(System.out::println);
+//		dao.findByActorIdIsNotNull(ActorDTO.class).forEach(System.out::println);
+		dao.findByActorIdIsNotNull(ActorShort.class).forEach(f -> System.out.println(f.getId() + " " + f.getNombre()));
 	}
 
 }
