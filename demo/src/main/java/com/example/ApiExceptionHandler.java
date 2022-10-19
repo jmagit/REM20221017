@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.exceptions.BadRequestException;
+import com.example.exceptions.DuplicateKeyException;
+import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 import java.io.Serializable;
@@ -41,15 +43,21 @@ public class ApiExceptionHandler {
 		}
 	}
 
-	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler({ NotFoundException.class })
+	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
 		return new ErrorMessage(exception.getMessage(), request.getRequestURI());
 	}
 
+	@ExceptionHandler({ BadRequestException.class, DuplicateKeyException.class })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler({ BadRequestException.class })
 	public ErrorMessage badRequest(Exception exception) {
 		return new ErrorMessage(exception.getMessage(), "");
+	}
+	
+	@ExceptionHandler({ InvalidDataException.class })
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage invalidData(Exception exception) {
+		return new ErrorMessage("Invalid data", exception.getMessage());
 	}
 }

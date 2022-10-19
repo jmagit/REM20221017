@@ -25,28 +25,34 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.domains.contracts.services.ActorService;
 import com.example.domains.entities.dtos.ActorDTO;
 import com.example.exceptions.BadRequestException;
+import com.example.exceptions.DuplicateKeyException;
+import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 import org.springframework.http.HttpStatus;
 
 @RestController
-@RequestMapping("/api/actores")
+@RequestMapping("/api/v1/actores")
 public class ActorResource {
 	@Autowired
 	private ActorService srv;
 
 	@GetMapping
 	public List<ActorDTO> getAll() {
-		// …
+		return srv.getByProjection(ActorDTO.class);
 	}
 
 	@GetMapping(path = "/{id}")
 	public ActorDTO getOne(@PathVariable int id) throws NotFoundException {
-		// …
+		var item = srv.getOne(id);
+		if(item.isEmpty())
+			throw new NotFoundException();
+		return ActorDTO.from(item.get());
 	}
+	
 	@PostMapping
-	public ResponseEntity<Object> create(@Valid @RequestBody ActorDTO item) throws BadRequestException {
-		// …
+	public ResponseEntity<Object> create(@Valid @RequestBody ActorDTO item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
+		var newItem = srv.add(ActorDTO.from(item));
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 			.buildAndExpand(newItem.getActorId()).toUri();
 		return ResponseEntity.created(location).build();
@@ -54,15 +60,17 @@ public class ActorResource {
 	}
 
 	@PutMapping("/{id}")
-	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void update(@PathVariable int id, @Valid @RequestBody ActorDTO item) throws BadRequestException, NotFoundException {
-		// …
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void update(@PathVariable int id, @Valid @RequestBody ActorDTO item) throws BadRequestException, NotFoundException, InvalidDataException {
+		if(id != item.getActorId())
+			throw new BadRequestException("No coinciden los identificadores");
+		srv.modify(ActorDTO.from(item));
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable int id) {
-		// ..
+		srv.deleteById(id);
 	}
 }
 
