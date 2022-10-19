@@ -9,6 +9,8 @@ import javax.validation.Validator;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +26,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.ActorService;
 import com.example.domains.entities.dtos.ActorDTO;
+import com.example.domains.entities.dtos.ActorShort;
+import com.example.domains.entities.dtos.ElementoShort;
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
@@ -38,16 +42,27 @@ public class ActorResource {
 	private ActorService srv;
 
 	@GetMapping
-	public List<ActorDTO> getAll() {
-		return srv.getByProjection(ActorDTO.class);
+	public List<ActorShort> getAll() {
+		return srv.getByProjection(ActorShort.class);
+	}
+	@GetMapping(params = "page")
+	public Page<ActorShort> getAll(Pageable page) {
+		return srv.getByProjection(page, ActorShort.class);
 	}
 
 	@GetMapping(path = "/{id}")
 	public ActorDTO getOne(@PathVariable int id) throws NotFoundException {
-		var item = srv.getOne(id);
-		if(item.isEmpty())
-			throw new NotFoundException();
-		return ActorDTO.from(item.get());
+//		var item = srv.getOne(id);
+//		if(item.isEmpty())
+//			throw new NotFoundException();
+//		return ActorDTO.from(item.get());
+		return ActorDTO.from(srv.getOne(id).get());
+	}
+	@GetMapping(path = "/{id}/peliculas")
+	public List<ElementoShort<Integer, String>> getPelis(@PathVariable int id) throws NotFoundException {
+		return srv.getOne(id).get().getFilmActors().stream()
+				.map(f-> new ElementoShort<Integer, String>(f.getFilm().getFilmId(), f.getFilm().getTitle()))
+				.toList();
 	}
 	
 	@PostMapping

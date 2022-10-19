@@ -42,7 +42,7 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	@NotBlank
 	@Size(min=2, max = 45)
 //	@Pattern(regexp = "[A-Z]+")
-	@NIF
+//	@NIF
 	private String lastName;
 
 	@Column(name="last_update", insertable=false, updatable=false, nullable=false)

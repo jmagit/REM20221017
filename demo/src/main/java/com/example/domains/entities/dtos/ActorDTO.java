@@ -1,5 +1,7 @@
 package com.example.domains.entities.dtos;
 
+import javax.validation.constraints.Pattern;
+
 import com.example.domains.entities.Actor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,6 +16,7 @@ public class ActorDTO {
 	@JsonProperty("nombre")
 	private String firstName;
 	@JsonProperty("apellidos")
+	@Pattern(regexp = "[A-Z]+")
 	private String lastName;
 
 	public static Actor from(ActorDTO targer) {
