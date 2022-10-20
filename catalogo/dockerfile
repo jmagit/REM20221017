@@ -1,0 +1,13 @@
+# mvnw clean package -DskipTests
+FROM openjdk:17-alpine
+COPY target/catalogo-1.0.jar /usr/app.jar
+EXPOSE 8010
+ENTRYPOINT ["java","-jar","/usr/app.jar"]
+# CMD ["java","-jar","/usr/app.jar"]
+
+# docker build -t ms-catalogo .
+# docker run -d --name ms-catalogo -p 8010:8010 --network microservicios --env DISCOVERY_URL=http://ms-eureka-server:8761 --env CONFIGSRV_URL=http://ms-config-server:8888/ --env ADMINSRV_URL=http://host.docker.internal:8081 --env ZIPKINSRV_URL=http://zipkin:9411 ms-catalogo
+# docker run -d --name ms-catalogo -p 8010:8010 --network microservicios --env CONFIGSRV_URL=http://ms-config-server:8888/ ms-catalogo
+# docker run -d -p 8011:8010 --network microservicios --env CONFIGSRV_URL=http://ms-config-server:8888/ ms-catalogo
+# docker run -d -p 8012:8010 --network microservicios --env CONFIGSRV_URL=http://ms-config-server:8888/ ms-catalogo
+# docker run -d --name ms-catalogo -p 8010:8010 --network microservicios --env CONFIGSRV_URL=http://ms-config-server:8888/ -v C:\Cursos\logs:/home ms-catalogo

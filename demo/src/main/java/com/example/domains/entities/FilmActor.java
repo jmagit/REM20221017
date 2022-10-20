@@ -2,6 +2,10 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 
 
@@ -24,11 +28,13 @@ public class FilmActor implements Serializable {
 	//bi-directional many-to-one association to Actor
 	@ManyToOne
 	@JoinColumn(name="actor_id", nullable=false, insertable=false, updatable=false)
+	@JsonIgnore
 	private Actor actor;
 
 	//bi-directional many-to-one association to Film
 	@ManyToOne
 	@JoinColumn(name="film_id", nullable=false, insertable=false, updatable=false)
+	@JsonBackReference
 	private Film film;
 
 	public FilmActor() {

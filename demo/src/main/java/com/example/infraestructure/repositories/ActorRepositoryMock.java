@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.example.domains.contracts.repositories.ActorRepository;
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.dtos.ActorDTO;
+import com.example.domains.entities.dtos.ActorShort;
 
 //@Primary
 //@Repository
@@ -287,6 +288,18 @@ public class ActorRepositoryMock implements ActorRepository {
 
 	@Override
 	public <T> Page<T> findByActorIdIsNotNull(Pageable page, Class<T> tipo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ActorShort> getByActorIdGreaterThan(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> List<T> findTodos(Class<T> tipo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

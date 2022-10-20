@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.ActorService;
+import com.example.domains.entities.Film;
 import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.ActorShort;
 import com.example.domains.entities.dtos.ElementoShort;
@@ -58,10 +59,16 @@ public class ActorResource {
 //		return ActorDTO.from(item.get());
 		return ActorDTO.from(srv.getOne(id).get());
 	}
+//	@GetMapping(path = "/{id}/peliculas")
+//	public List<ElementoShort<Integer, String>> getPelis(@PathVariable int id) throws NotFoundException {
+//		return srv.getOne(id).get().getFilmActors().stream()
+//				.map(f-> new ElementoShort<Integer, String>(f.getFilm().getFilmId(), f.getFilm().getTitle()))
+//				.toList();
+//	}
 	@GetMapping(path = "/{id}/peliculas")
-	public List<ElementoShort<Integer, String>> getPelis(@PathVariable int id) throws NotFoundException {
+	public List<Film> getPelis(@PathVariable int id) throws NotFoundException {
 		return srv.getOne(id).get().getFilmActors().stream()
-				.map(f-> new ElementoShort<Integer, String>(f.getFilm().getFilmId(), f.getFilm().getTitle()))
+				.map(f-> f.getFilm())
 				.toList();
 	}
 	

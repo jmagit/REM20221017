@@ -3,6 +3,7 @@ package com.example.domains.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,7 +37,7 @@ public class Category implements Serializable {
 
 	//bi-directional many-to-one association to FilmCategory
 	@OneToMany(mappedBy="category")
-	@JsonIgnore
+	@JsonBackReference
 	private List<FilmCategory> filmCategories;
 
 	public Category() {

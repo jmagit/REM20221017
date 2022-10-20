@@ -1,0 +1,9 @@
+# mvnw clean package
+FROM openjdk:17-alpine
+COPY target/megusta-0.0.1-SNAPSHOT.jar /usr/app.jar
+EXPOSE 8030
+ENTRYPOINT ["java","-jar","/usr/app.jar"]
+# CMD ["java","-jar","/usr/app.jar"]
+
+# docker build -t ms-megusta .
+# docker run -d --name ms-megusta -p 8030:8030 --network microservicios --env DISCOVERY_URL=http://ms-eureka-server:8761 --env ZIPKINSRV_URL=http://zipkin:9411 --env REDIS_HOST=redis ms-megusta

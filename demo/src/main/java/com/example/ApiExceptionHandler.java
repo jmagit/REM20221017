@@ -4,6 +4,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
@@ -48,8 +49,8 @@ public class ApiExceptionHandler {
 
 	@ExceptionHandler({ NotFoundException.class, EmptyResultDataAccessException.class, NoSuchElementException.class })
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
-		return new ErrorMessage("Not found", request.getRequestURI());
+	public ErrorMessage notFoundRequest(Exception exception) {
+		return new ErrorMessage("Not found", ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
 	}
 
 	@ExceptionHandler({ BadRequestException.class, DuplicateKeyException.class })
