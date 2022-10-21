@@ -8,6 +8,7 @@ public class Usuario {
 	private String password;
 	private String nombre;
 	private List<String> roles;
+	private boolean active = true;
 	
 	public Usuario(String idUsuario, String password, String nombre, List<String> roles) {
 		super();
@@ -15,6 +16,15 @@ public class Usuario {
 		this.password = password;
 		this.nombre = nombre;
 		this.roles = roles;
+	}
+
+	public Usuario(String idUsuario, String password, String nombre, List<String> roles, boolean active) {
+		super();
+		this.idUsuario = idUsuario;
+		this.password = password;
+		this.nombre = nombre;
+		this.roles = roles;
+		this.active = active;
 	}
 
 	public String getIdUsuario() {
@@ -47,6 +57,14 @@ public class Usuario {
 
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override

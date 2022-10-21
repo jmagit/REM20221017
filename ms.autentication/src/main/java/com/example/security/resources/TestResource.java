@@ -68,42 +68,23 @@ public class TestResource {
 		return SECRET;
 	}
 	
-	@Value("${jwt.key.private}")
-	private String privateKeyContent;
-	@Value("${jwt.key.public}")
-	private String publicKeyContent;
-	
-	@GetMapping("/rsa/encode")
+	@GetMapping("/hmac/encode")
 	@PreAuthorize("permitAll")
 	@SecurityRequirement(name = "bearerAuth")
 	public String generateToken() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyContent));
-        RSAPrivateKey privateKey = (RSAPrivateKey)kf.generatePrivate(keySpecPKCS8);
-        X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyContent));
-        RSAPublicKey publicKey = (RSAPublicKey) kf.generatePublic(keySpecX509);
-
 		String token = JWT.create()
 				.withIssuer("MicroserviciosJWT")
 				.withClaim("name", "Hola Mundo")
 				.withIssuedAt(new Date(System.currentTimeMillis())).withNotBefore(new Date())
 				.withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60_000))
-				.sign(Algorithm.RSA256(publicKey, privateKey));
-		DecodedJWT rslt = JWT.require(Algorithm.RSA256(publicKey, null)).withIssuer("MicroserviciosJWT").build()
-				.verify(token);
-		
+				.sign(Algorithm.HMAC256(SECRET));
 		return token;
 	}
-	@GetMapping("/rsa/decode")
+	@GetMapping("/hmac/decode")
 	@PreAuthorize("permitAll")
 	@SecurityRequirement(name = "bearerAuth")
 	public String decodeToken(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-
-        X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyContent));
-        RSAPublicKey publicKey = (RSAPublicKey) kf.generatePublic(keySpecX509);
-
-		DecodedJWT rslt = JWT.require(Algorithm.RSA256(publicKey, null)).withIssuer("MicroserviciosJWT").build()
+		DecodedJWT rslt = JWT.require(Algorithm.HMAC256(SECRET)).withIssuer("MicroserviciosJWT").build()
 				.verify(token);
 		
 		return rslt.getClaim("name").asString();

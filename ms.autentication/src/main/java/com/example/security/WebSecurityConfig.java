@@ -42,8 +42,8 @@ public class WebSecurityConfig {
 			.authorizeRequests()
 			.antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 			.antMatchers("/actuator/**").permitAll()
-			.antMatchers("/login").permitAll()
-			.antMatchers("/rsa/**").permitAll()
+			.antMatchers("/login", "/refresh").permitAll()
+			.antMatchers("/hmac/**").permitAll()
 			.antMatchers(HttpMethod.GET, "/solo-admin").hasRole("ADMIN")
 			.anyRequest().authenticated();
 		return http.build();
