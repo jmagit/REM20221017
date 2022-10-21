@@ -16,6 +16,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -96,13 +97,15 @@ public class CotillaResource {
 	public List<PelisDto> getPelisProxy() {
 		return proxy.getPelis();
 	}
+	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "bearerAuth")
 	@GetMapping(path = "/pelis/{id}/proxy")
 	public PelisDto getPelisProxy(@PathVariable int id) {
 		return proxy.getPeli(id);
 	}
 	
 //	@PreAuthorize("hasRole('ADMIN')")
-//	@PreAuthorize("authenticated")
+	@PreAuthorize("authenticated")
 	@SecurityRequirement(name = "bearerAuth")
 	@PostMapping(path = "/pelis/{id}/like")
 	public String getPelisLike(@PathVariable int id, @Parameter(hidden = true) @RequestHeader(required = false) String authorization) {

@@ -249,7 +249,7 @@ public class FilmResource {
 //		return proxy.sendLike();
 //	}
 
-//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Enviar un me gusta")
 	@ApiResponse(responseCode = "200", description = "Like enviado")
 	@SecurityRequirement(name = "bearerAuth")
