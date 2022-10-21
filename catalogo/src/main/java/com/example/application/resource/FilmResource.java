@@ -71,8 +71,11 @@ public class FilmResource {
 		return dao.findByFilmIdNotNull(pageable, FilmShortDTO.class);
 	}
 
-	@Operation(summary = "Listado de las peliculas", description = "Recupera la lista de peliculas en formato corto o detallado, se puede paginar.", parameters = {
-			@Parameter(in = ParameterIn.QUERY, name = "mode", required = false, description = "Formato de las peliculas", schema = @Schema(type = "string", allowableValues = {
+	@Operation(
+			summary = "Listado de las peliculas", 
+			description = "Recupera la lista de peliculas en formato corto o detallado, se puede paginar.", 
+			parameters = {
+					@Parameter(in = ParameterIn.QUERY, name = "mode", required = false, description = "Formato de las peliculas", schema = @Schema(type = "string", allowableValues = {
 					"details", "short" }, defaultValue = "short")) },
 			responses = {
 					@ApiResponse(responseCode = "200", description = "OK", content = 
